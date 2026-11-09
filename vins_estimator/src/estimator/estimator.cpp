@@ -158,6 +158,7 @@ void Estimator::changeSensorType(int use_imu, int use_stereo)
 }
 
 void Estimator::inputImage(double t, const cv::Mat &_img, const cv::Mat &_img1)
+// void Estimator::inputImage(double t, const cv::Mat &_img, const cv::Mat &_img1, double range)
 {
     inputImageCnt++;
     map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> featureFrame;
@@ -165,6 +166,7 @@ void Estimator::inputImage(double t, const cv::Mat &_img, const cv::Mat &_img1)
 
     if(_img1.empty())
         featureFrame = featureTracker.trackImage(t, _img);
+        // featureFrame = featureTracker.trackImage(t, _img, cv::Mat(), range);        
     else
         featureFrame = featureTracker.trackImage(t, _img, _img1);
     //printf("featureTracker time: %f\n", featureTrackerTime.toc());
@@ -604,7 +606,7 @@ bool Estimator::initialStructure()
         //ROS_WARN("IMU variation %f!", var);
         if(var < 0.25)
         {
-            ROS_INFO("IMU excitation not enouth!");
+            ROS_INFO("IMU excitation not enouth! var: %f", var);
             //return false;
         }
     }

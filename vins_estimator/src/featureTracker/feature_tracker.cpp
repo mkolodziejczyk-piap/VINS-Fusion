@@ -102,10 +102,10 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
     cv::Mat rightImg = _img1;
     // /*
     {
-        cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(8, 8));
+        cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(2.0, cv::Size(8, 8));
         clahe->apply(cur_img, cur_img);
-        clahe->apply(cur_img, cur_img);
-        clahe->apply(cur_img, cur_img);
+        // clahe->apply(cur_img, cur_img);
+        // clahe->apply(cur_img, cur_img);
         if(!rightImg.empty())
             clahe->apply(rightImg, rightImg);
     }

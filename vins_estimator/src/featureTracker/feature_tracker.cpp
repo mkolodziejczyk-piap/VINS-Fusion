@@ -91,7 +91,7 @@ double FeatureTracker::distance(cv::Point2f &pt1, cv::Point2f &pt2)
     return sqrt(dx * dx + dy * dy);
 }
 
-map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackImage(double _cur_time, const cv::Mat &_img, const cv::Mat &_img1)
+map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackImage(double _cur_time, const cv::Mat &_img, const cv::Mat &_img1, double range)
 {
     TicToc t_r;
     cur_time = _cur_time;
@@ -175,6 +175,7 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
         ROS_DEBUG("detect feature begins");
         TicToc t_t;
         int n_max_cnt = MAX_CNT - static_cast<int>(cur_pts.size());
+        ROS_DEBUG("cur_pts.size(): %d", static_cast<int>(cur_pts.size()));
         if (n_max_cnt > 0)
         {
             if(mask.empty())
@@ -244,7 +245,7 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
         prev_un_right_pts_map = cur_un_right_pts_map;
     }
     if(SHOW_TRACK)
-        drawTrack(cur_img, rightImg, ids, cur_pts, cur_right_pts, prevLeftPtsMap);
+        drawTrack(cur_img, rightImg, ids, cur_pts, cur_right_pts, prevLeftPtsMap, range);
 
     prev_img = cur_img;
     prev_pts = cur_pts;
@@ -445,7 +446,8 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
                                vector<int> &curLeftIds,
                                vector<cv::Point2f> &curLeftPts, 
                                vector<cv::Point2f> &curRightPts,
-                               map<int, cv::Point2f> &prevLeftPtsMap)
+                               map<int, cv::Point2f> &prevLeftPtsMap,
+                               double range)
 {
     //int rows = imLeft.rows;
     int cols = imLeft.cols;
@@ -471,6 +473,13 @@ void FeatureTracker::drawTrack(const cv::Mat &imLeft, const cv::Mat &imRight,
             //cv::line(imTrack, leftPt, rightPt, cv::Scalar(0, 255, 0), 1, 8, 0);
         }
     }
+
+    cv::Point org(476.80224609375, 295.04913330078125);
+    cv::circle(imTrack, org, 5, cv::Scalar(0, 255, 0), 2);
+    std:string txt = std::to_string(range);
+    txt = txt.substr(0, txt.find(".")+1);
+    cv::Scalar color = cv::Scalar(255,  255,  255);
+    cv::putText(imTrack, txt, org, cv::FONT_HERSHEY_COMPLEX, 1, color, 1, cv::LINE_8);
     
     map<int, cv::Point2f>::iterator mapIt;
     for (size_t i = 0; i < curLeftIds.size(); i++)

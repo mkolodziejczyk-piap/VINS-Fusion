@@ -108,11 +108,11 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
         // clahe->apply(cur_img, cur_img);
         // clahe->apply(cur_img, cur_img);
 
-        cv::Mat kernel = (cv::Mat_<float>(3,3) <<
-                        0, -1, 0,
-                        -1, 5, -1,
-                        0, -1, 0);
-        cv::filter2D(cur_img, cur_img, -1 , kernel);
+        // cv::Mat kernel = (cv::Mat_<float>(3,3) <<
+        //                 0, -1, 0,
+        //                 -1, 5, -1,
+        //                 0, -1, 0);
+        // cv::filter2D(cur_img, cur_img, -1 , kernel);
 
         if(!rightImg.empty())
             clahe->apply(rightImg, rightImg);

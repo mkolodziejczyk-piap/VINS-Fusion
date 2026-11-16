@@ -101,23 +101,23 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
     col = cur_img.cols;
     cv::Mat rightImg = _img1;
     // /*
-    {
-        // cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(8, 8));
-        cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(6.0, cv::Size(8, 8));
-        // cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(16, 16));
-        clahe->apply(cur_img, cur_img);
-        // clahe->apply(cur_img, cur_img);
-        // clahe->apply(cur_img, cur_img);
+    // {
+    //     // cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(8, 8));
+    //     cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(6.0, cv::Size(8, 8));
+    //     // cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(16, 16));
+    //     clahe->apply(cur_img, cur_img);
+    //     // clahe->apply(cur_img, cur_img);
+    //     // clahe->apply(cur_img, cur_img);
 
-        // cv::Mat kernel = (cv::Mat_<float>(3,3) <<
-        //                 0, -1, 0,
-        //                 -1, 5, -1,
-        //                 0, -1, 0);
-        // cv::filter2D(cur_img, cur_img, -1 , kernel);
+    //     // cv::Mat kernel = (cv::Mat_<float>(3,3) <<
+    //     //                 0, -1, 0,
+    //     //                 -1, 5, -1,
+    //     //                 0, -1, 0);
+    //     // cv::filter2D(cur_img, cur_img, -1 , kernel);
 
-        if(!rightImg.empty())
-            clahe->apply(rightImg, rightImg);
-    }
+    //     if(!rightImg.empty())
+    //         clahe->apply(rightImg, rightImg);
+    // }
     // */
     cur_pts.clear();
 
@@ -194,7 +194,8 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
                 cout << "mask is empty " << endl;
             if (mask.type() != CV_8UC1)
                 cout << "mask type wrong " << endl;
-            cv::goodFeaturesToTrack(cur_img, n_pts, MAX_CNT - cur_pts.size(), 0.01, MIN_DIST, mask, 24);
+            cv::goodFeaturesToTrack(cur_img, n_pts, MAX_CNT - cur_pts.size(), 0.01, MIN_DIST, mask);
+            // cv::goodFeaturesToTrack(cur_img, n_pts, MAX_CNT - cur_pts.size(), 0.01, MIN_DIST, mask, 24);
         }
         else
             n_pts.clear();
